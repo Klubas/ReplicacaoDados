@@ -26,7 +26,7 @@ import socket
 
 def client():
     host = socket.gethostname()  # get local machine name
-    port = 8080  # Make sure it's within the > 1024 $$ <65535 range
+    port = int(sys.argv[2])  # Make sure it's within the > 1024 $$ <65535 range
 
     s = socket.socket()
     s.connect((host, port))
@@ -41,8 +41,10 @@ def client():
 
 
 def server():
-    host = socket.gethostname()  # get local machine name
-    port = 8080  # Make sure it's within the > 1024 $$ <65535 range
+    host = get_host_ip()  # get local machine name
+    port = int(sys.argv[2])  # Make sure it's within the > 1024 $$ <65535 range
+
+    print("Host: " + host + ":" + str(port))
 
     s = socket.socket()
     s.bind((host, port))
@@ -60,12 +62,34 @@ def server():
 
     c.close()
 
+def get_host_ip():
+    try:
+        return socket.gethostbyname(socket.gethostname())
+    except:
+        return "0.0.0.0"
+
+def help(err):
+    print("Use os argumentos [client] ou [server] seguidos da porta usada para conexão [port]")
+    print(__file__ + " [client/server] [port]")
+
+    if err < 0:
+        print("Erro: " + str(err))
+
+    print("\nArgumentos utilizados: \n")
+    print(sys.argv)
+
+    sys.exit(err)
 
 if __name__ == '__main__':
     if sys.argv[1] == 'server':
-        server()
+        try:
+            server()
+        except:
+            help(-1)
     elif sys.argv[1] == 'client':
-        client()
+        try:
+            client()
+        except:
+            help(-2)
     else:
-        print("Use os argumentos [client] ou [server]")
-        sys.exit(-1)
+        help(0)
