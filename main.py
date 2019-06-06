@@ -25,8 +25,10 @@ import socket
 
 
 def client():
-    host = socket.gethostname()  # get local machine name
+    host = get_host_ip()  # get local machine name
     port = int(sys.argv[2])  # Make sure it's within the > 1024 $$ <65535 range
+
+    print("Host: " + host + ":" + str(port))
 
     s = socket.socket()
     s.connect((host, port))
@@ -62,11 +64,13 @@ def server():
 
     c.close()
 
+
 def get_host_ip():
     try:
         return socket.gethostbyname(socket.gethostname())
     except:
         return "0.0.0.0"
+
 
 def help(err):
     print("Use os argumentos [client] ou [server] seguidos da porta usada para conexão [port]")
