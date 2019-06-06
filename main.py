@@ -24,6 +24,8 @@ https://medium.com/podiihq/networking-how-to-communicate-between-two-python-prog
 import sys
 import socket
 
+from model.database import DataBase
+
 
 def client():
     server_addres = get_host().split(":")
@@ -74,6 +76,10 @@ def server():
 
     c.close()
 
+def setup_db_connection():
+    db = DataBase()
+    tabbles = db.tabelas()
+    print(tabbles)
 
 def commit_to_db(data):
     print('From online user: ' + data)
@@ -84,13 +90,10 @@ def commit_to_client_db(c, data):
 
 
 def get_host():
-    try:
-        if sys.argv[1] == 'client':
-            return input("Informe o endereço IP do servidor: ")
-        else:
-            return socket.gethostbyname(socket.gethostname())
-    except:
-        return "0.0.0.0"
+    if sys.argv[1] == 'client':
+        return input("Informe o endereço IP do servidor: ")
+    else:
+        return socket.gethostbyname(socket.gethostname())
 
 
 def help(err):
@@ -109,12 +112,12 @@ if __name__ == '__main__':
     if sys.argv[1] == 'server':
         try:
             server()
-        except:
+        except Exception:
             help(-1)
     elif sys.argv[1] == 'client':
         try:
             client()
-        except:
+        except Exception:
             help(-2)
     else:
         help(0)
