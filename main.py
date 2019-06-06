@@ -76,15 +76,27 @@ def server():
     if not data:
         c.close()
 
-    db = setup_db_connection("server")
-    r = commit_to_db(db, 'LAUDOS', 'numero_laudo', data)
-    print(r)
-
-    db_client = setup_db_connection("client")
-    r = commit_to_db(db_client, 'LAUDOS_REPLICACAO', 'numero_laudo', data)
-    print(r)
+    salvar_dados(data)
 
     c.close()
+
+def salvar_dados(data):
+    try:
+        db = setup_db_connection("server")
+        r = commit_to_db(db, 'LAUDOaS', 'numero_laudo', data)
+        print(r)
+    except:
+        print("Não foi possível salvar as informações no banco de dados")
+        exit(-1)
+
+    # se tiver sucesso:
+    try:
+        db_client = setup_db_connection("client")
+        r = commit_to_db(db_client, 'LAUDOS_REPLICADOS', 'numero_laudo', data)
+        print(r)
+    except:
+        print("Não foi possível replicar as informaçõespara o banco de dados client")
+
 
 #inicia conexão com banco de dados aws
 def setup_db_connection(profile):
@@ -100,10 +112,7 @@ def commit_to_db(db, tabela, chave, data):
     return table.create(data)
 
 
-def commit_to_client_db(db ,c, data):
-    c.send(data.encode('utf-8'))
-
-
+#identifica host do servidor e solicita que o client informe o host com o qual deseja se conectar
 def get_host():
     if sys.argv[1] == 'client':
         return input("Informe o endereço IP do servidor: ").split(":")
@@ -125,14 +134,8 @@ def help(err):
 
 if __name__ == '__main__':
     if sys.argv[1] == 'server':
-        #try:
         server()
-        #except Exception:
-        #    help(-1)
     elif sys.argv[1] == 'client':
-        #try:
         client()
-        #except Exception:
-        #help(-2)
     else:
         help(0)
