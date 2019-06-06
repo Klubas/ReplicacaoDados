@@ -83,7 +83,7 @@ def server():
 def salvar_dados(data):
     try:
         db = setup_db_connection("server")
-        r = commit_to_db(db, 'LAUDOaS', 'numero_laudo', data)
+        r = commit_to_db(db, 'LAUDOS', 'numero_laudo', data)
         print(r)
     except:
         print("Não foi possível salvar as informações no banco de dados")
