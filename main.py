@@ -43,26 +43,20 @@ def client():
     s = socket.socket()
     s.connect((host, port))
 
+    #dados que serão enviados para o servidor
     num_laudo = input("Num laudo: ")
     descricao = input("Descricao: ")
 
     message = "numero_laudo: " + num_laudo + "," + "descricao: " + descricao
 
-    #while message != 'q':
     try:
         s.send(message.encode('utf-8'))
-        data = s.recv(1024).decode('utf-8')
-        print('Received from server: ' + data)
-        #message = input('==> ')
     except KeyboardInterrupt:
         print("Conexão Encerrada\n")
     s.close()
 
 
 def server():
-
-    #inicia conexão com o banco de dados do server
-    db = setup_db_connection("server")
 
     host = get_host()
     port = int(sys.argv[2])
@@ -77,20 +71,22 @@ def server():
 
     print("Connection from: " + str(addr))
 
-    #while True:
     data = c.recv(1024).decode('utf-8')
 
     if not data:
-        #break
         c.close()
 
-    commit_to_db(db, 'LAUDOS', 'numero_laudo', data)
+    db = setup_db_connection("server")
+    r = commit_to_db(db, 'LAUDOS', 'numero_laudo', data)
+    print(r)
 
-    commit_to_client_db(db, c, data)
+    db_client = setup_db_connection("client")
+    r = commit_to_db(db_client, 'LAUDOS_REPLICACAO', 'numero_laudo', data)
+    print(r)
 
     c.close()
 
-
+#inicia conexão com banco de dados aws
 def setup_db_connection(profile):
     db = DataBase(profile)
     tables = db.listar_tabelas()

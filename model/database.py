@@ -2,6 +2,28 @@ import boto3
 from boto3.dynamodb.conditions import Attr, Key
 
 
+"""
+Precisa ter esse arquivo no diretório $HOME com as credenciais AWS
+~/.aws/config
+
+[default]
+access_key=
+secret_key=
+region=sa-east-1
+
+[profile client]
+aws_access_key_id=
+aws_secret_access_key=
+region=sa-east-1
+
+[profile server]
+aws_access_key_id=
+aws_secret_access_key=
+region=sa-east-1
+
+"""
+
+
 class DataBase():
     def __init__(self, profile="default"):
         self.session = boto3.Session(profile_name=profile)
@@ -17,7 +39,6 @@ class Tabela():
         self.db = db
         self.key_name = key
         self.table = self.db.resource.Table(nome)
-
 
 
     def create(self, data):
@@ -65,7 +86,7 @@ class Tabela():
             return -1
 
     """
-        modelo dos dados:
+        modelo dos dados, poderia ser um JSON:
     {
         numero_laudo: valor, 
         descricao: desc'
