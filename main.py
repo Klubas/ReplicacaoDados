@@ -43,10 +43,13 @@ def client():
 
     message = input('-> ')
     while message != 'q':
-        s.send(message.encode('utf-8'))
-        data = s.recv(1024).decode('utf-8')
-        print('Received from server: ' + data)
-        message = input('==> ')
+        try:
+            s.send(message.encode('utf-8'))
+            data = s.recv(1024).decode('utf-8')
+            print('Received from server: ' + data)
+            message = input('==> ')
+        except KeyboardInterrupt:
+            print("Conexão Encerrada\n")
     s.close()
 
 
@@ -77,9 +80,9 @@ def server():
     c.close()
 
 def setup_db_connection():
-    db = DataBase()
-    tabbles = db.tabelas()
-    print(tabbles)
+    db = DataBase("server")
+    tables = db.tabelas()
+    print(tables)
 
 def commit_to_db(data):
     print('From online user: ' + data)

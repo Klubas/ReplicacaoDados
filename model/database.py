@@ -1,10 +1,13 @@
 import boto3
 from boto3.dynamodb.conditions import Attr, Key
 
+
 class DataBase():
-    def __init__(self):
-        self.resource = boto3.resource('dynamodb')
-        self.client = boto3.client('dynamodb')
+    def __init__(self, profile="default"):
+        self.session = boto3.Session(profile_name=profile)
+        self.client = self.session.client('dynamodb')
+        #self.resource = boto3.resource('dynamodb')
+        #self.client = boto3.client('dynamodb')
 
     def tabelas(self):
         return self.client.list_tables()['TableNames']
