@@ -59,16 +59,28 @@ def server():
 
     s.listen(1)
     c, addr = s.accept()
+
     print("Connection from: " + str(addr))
     while True:
         data = c.recv(1024).decode('utf-8')
         if not data:
             break
-        print('From online user: ' + data)
+
         data = data.upper()
-        c.send(data.encode('utf-8'))
+
+        commit_to_db(data)
+
+        commit_to_client_db(c, data)
 
     c.close()
+
+
+def commit_to_db(data):
+    print('From online user: ' + data)
+
+
+def commit_to_client_db(c, data):
+    c.send(data.encode('utf-8'))
 
 
 def get_host():
