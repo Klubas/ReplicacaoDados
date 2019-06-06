@@ -112,8 +112,6 @@ if __name__ == '__main__':
         except:
             help(-1)
     elif sys.argv[1] == 'client':
-        client()
-
         try:
             client()
         except:
