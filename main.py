@@ -25,8 +25,13 @@ import socket
 
 
 def client():
-    host = get_host_ip()  # get local machine name
-    port = int(sys.argv[2])  # Make sure it's within the > 1024 $$ <65535 range
+    server_addres = get_host().split(":")
+    host = server_addres[0]
+
+    try:
+        port = int(server_addres[1])
+    except IndexError:
+        port = int(sys.argv[2])
 
     print("Host: " + host + ":" + str(port))
 
@@ -43,7 +48,7 @@ def client():
 
 
 def server():
-    host = get_host_ip()  # get local machine name
+    host = get_host()  # get local machine name
     port = int(sys.argv[2])  # Make sure it's within the > 1024 $$ <65535 range
 
     print("Host: " + host + ":" + str(port))
@@ -65,9 +70,12 @@ def server():
     c.close()
 
 
-def get_host_ip():
+def get_host():
     try:
-        return socket.gethostbyname(socket.gethostname())
+        if sys.argv[1] == 'client':
+            return input("Informe o endereço IP do servidor: ")
+        else:
+            return socket.gethostbyname(socket.gethostname())
     except:
         return "0.0.0.0"
 
@@ -91,6 +99,8 @@ if __name__ == '__main__':
         except:
             help(-1)
     elif sys.argv[1] == 'client':
+        client()
+
         try:
             client()
         except:
