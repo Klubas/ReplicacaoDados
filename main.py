@@ -1,27 +1,3 @@
-"""
-
-Comunicação entre duas aplicações cliente servidor
-
-Cliente
- - Recebe os dados
- - Envia para o servidor
-
-Servidor
- - Recebe os dados do cliente
- - Salva os dados do cliente
- - Envia os dados salvos de volta para o cliente
-
-Cliente
- - Recebe os dados do servidor
- - Salva os dados do servidor
-
-
-Referências
-https://medium.com/podiihq/networking-how-to-communicate-between-two-python-programs-abd58b97390a
-https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html
-https://boto3.amazonaws.com/v1/documentation/api/latest/guide/dynamodb.html
-
-"""
 
 import sys
 import socket
