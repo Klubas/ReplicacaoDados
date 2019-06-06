@@ -43,13 +43,17 @@ def client():
     s = socket.socket()
     s.connect((host, port))
 
-    message = input('-> ')
+    num_laudo = input("Num laudo: ")
+    descricao = input("Descricao: ")
+
+    message = "numero_laudo: " + num_laudo + "," + "descricao: " + descricao
+
     #while message != 'q':
     try:
         s.send(message.encode('utf-8'))
         data = s.recv(1024).decode('utf-8')
         print('Received from server: ' + data)
-        message = input('==> ')
+        #message = input('==> ')
     except KeyboardInterrupt:
         print("Conexão Encerrada\n")
     s.close()
@@ -57,10 +61,8 @@ def client():
 
 def server():
 
+    #inicia conexão com o banco de dados do server
     db = setup_db_connection("server")
-    table = Tabela('LAUDOS', 'numero_laudo', db)
-    r = table.create('numero_laudo: valor, descricao: desc')
-    print("Retorno="+str(r))
 
     host = get_host()
     port = int(sys.argv[2])
@@ -82,11 +84,12 @@ def server():
         #break
         c.close()
 
-    commit_to_db(db, data)
+    commit_to_db(db, 'LAUDOS', 'numero_laudo', data)
 
     commit_to_client_db(db, c, data)
 
     c.close()
+
 
 def setup_db_connection(profile):
     db = DataBase(profile)
@@ -94,8 +97,11 @@ def setup_db_connection(profile):
     print(tables)
     return db
 
-def commit_to_db(db, data):
-    print('From online user: ' + data)
+
+def commit_to_db(db, tabela, chave, data):
+    print('Dados a serem salvos: ' + data)
+    table = Tabela(tabela, chave, db) #acessa recurso da tabela
+    return table.create(data)
 
 
 def commit_to_client_db(db ,c, data):

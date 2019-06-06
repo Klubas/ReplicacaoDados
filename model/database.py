@@ -18,19 +18,13 @@ class Tabela():
         self.key_name = key
         self.table = self.db.resource.Table(nome)
 
-    def query(self, arg):
-        try:
-            return self.table.query(KeyConditionExpression=Key(self.key_name).eq(arg))
-        except Exception:
-            return -1
+
 
     def create(self, data):
-        data = data.split(",")
-        for i in range(0, len(data)):
-            data[i] = data[i].split(":")
+        data = self.__tratar_dados__(data)
 
         #try:
-        if len(self.query(data[0][1])['Items']) == 0:  # testa se o item ja existe no banco
+        if len(self.__query__(data[0][1])['Items']) == 0:  # testa se o item ja existe no banco
             response = self.table.put_item(
                 Item={
                     data[0][0]: data[0][1],
@@ -44,12 +38,15 @@ class Tabela():
        #     return -1
 
     def update(self, data):
+        data = self.__tratar_dados__(data)
+
         try:
             response = self.table.update_item(
                 Key={self.key_name: data},
-                UpdateExpression='SET username = :val1 , first_name = :val2 , last_name = :val3 , conta = :val4',
+                UpdateExpression='SET ' + data[0][0] + ' = :val1 , ' + data[1][0] + ' = :val2',
                 ExpressionAttributeValues={
-                    ':val1': data
+                    ':val1': data[0][1],
+                    ':val2': data[1][1]
                 }
             )
             return response
@@ -64,6 +61,26 @@ class Tabela():
                 }
             )
             return response
+        except Exception:
+            return -1
+
+    """
+        modelo dos dados:
+    {
+        numero_laudo: valor, 
+        descricao: desc'
+    }   
+    """
+
+    def __tratar_dados__(self, data):
+        data = data.split(",")
+        for i in range(0, len(data)):
+            data[i] = data[i].split(":")
+        return data
+
+    def __query__(self, arg):
+        try:
+            return self.table.query(KeyConditionExpression=Key(self.key_name).eq(arg))
         except Exception:
             return -1
 
