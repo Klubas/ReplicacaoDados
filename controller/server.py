@@ -1,28 +1,30 @@
 from model.database import DataBase, Tabela
-from controller.api import *
 
 class Server():
-    def __init__(self, host, port):
-        self.host = host
-        self.port = int(port)
-        print("Host: " + host + ":" + str(port))
+    def __init__(self):
+        pass
 
     def salvar_dados(self, data):
+        db = self.setup_db_connection("server")
+        r = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
+        print(r)
+        return r
         try:
             db = self.setup_db_connection("server")
             r = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
             print(r)
+            try: # se tiver sucesso:
+                db_client = self.setup_db_connection("client")
+                r = self.__commit_to_db__(db_client, 'LAUDOS_REPLICADOS', 'numero_laudo', data)
+                print(r)
+            except:
+                # Todo: colocar trativa para desfazer a transação anerior
+                print("Não foi possível replicar as informações para o banco de dados client")
+                return"Erro"
         except:
             print("Não foi possível salvar as informações no banco de dados")
-            exit(-1)
+            return("Erro")
 
-        # se tiver sucesso:
-        try:
-            db_client = self.setup_db_connection("client")
-            r = self.__commit_to_db__(db_client, 'LAUDOS_REPLICADOS', 'numero_laudo', data)
-            print(r)
-        except:
-            print("Não foi possível replicar as informaçõespara o banco de dados client")
 
     # inicia conexão com banco de dados aws
     def setup_db_connection(self, profile):
