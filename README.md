@@ -11,6 +11,7 @@
 
 ### Dependências
 - boto3
+- flask
 
 ### Configurações
     

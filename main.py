@@ -2,12 +2,20 @@
 import sys
 import socket
 
+from flask import Flask
+from flask_restful import Resource, Api
 
 from controller.client import Client
 from controller.server import Server
+from controller.api import *
 
+app = Flask(__name__)
+api = Api(app)
 
-#identifica host do servidor e solicita que o client informe o host com o qual deseja se conectar
+api.add_resource(Index, '/')
+api.add_resource(Cadastro, '/cadastro/<string:json>')
+
+# identifica host do servidor e solicita que o client informe o host com o qual deseja se conectar
 def get_host():
     if sys.argv[1] == 'client':
         return input("Informe o endereço IP do servidor: ").split(":")
@@ -30,6 +38,7 @@ def help(err):
 
 if __name__ == '__main__':
     if sys.argv[1] == 'server':
+        app.run(debug=True)
         server = Server(get_host(), sys.argv[2])
         c = server.inicia_escuta_e_transmissao()
         server.finalizar_conexao(c)

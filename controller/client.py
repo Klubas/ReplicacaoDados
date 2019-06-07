@@ -1,4 +1,4 @@
-import socket
+from requests import put, get
 
 class Client:
     def __init__(self, server_address):
@@ -11,10 +11,6 @@ class Client:
 
         print("Host: " + self.host + ":" + str(self.port))
 
-    def abre_conexao(self):
-        s = socket.socket()
-        s.connect((self.host, self.port))
-        return s
 
     def busca_dados(self):
         #dados que serão enviados para o servidor
@@ -24,10 +20,8 @@ class Client:
         return "numero_laudo: " + num_laudo + "," + "descricao: " + descricao
 
     def envia_dados(self, message, socket):
+        put('http://localhost:5000/cadastro', data=message).json()
         try:
             socket.send(message.encode('utf-8'))
         except KeyboardInterrupt:
             print("Conexão Encerrada\n")
-
-    def fechar_conexao(self, socket):
-        socket.close()
