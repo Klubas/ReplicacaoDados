@@ -1,5 +1,4 @@
 from model.database import DataBase, Tabela
-from controller.api import *
 
 class Server():
     def __init__(self, host, port):

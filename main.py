@@ -40,15 +40,11 @@ if __name__ == '__main__':
     if sys.argv[1] == 'server':
         app.run(debug=True)
         server = Server(get_host(), sys.argv[2])
-        c = server.inicia_escuta_e_transmissao()
-        server.finalizar_conexao(c)
 
     elif sys.argv[1] == 'client':
         client = Client(get_host())
         dados = client.busca_dados()
-        s = client.abre_conexao()
-        client.envia_dados(dados, s)
-        client.fechar_conexao(s)
+        client.envia_dados(dados)
 
     else:
         help(0)

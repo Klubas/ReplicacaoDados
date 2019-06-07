@@ -14,14 +14,8 @@ class Client:
 
     def busca_dados(self):
         #dados que serão enviados para o servidor
-        num_laudo = input("Num laudo: ")
-        descricao = input("Descricao: ")
+        return get('http://localhost:5000/cadastro').json()
 
-        return "numero_laudo: " + num_laudo + "," + "descricao: " + descricao
 
-    def envia_dados(self, message, socket):
+    def envia_dados(self, message):
         put('http://localhost:5000/cadastro', data=message).json()
-        try:
-            socket.send(message.encode('utf-8'))
-        except KeyboardInterrupt:
-            print("Conexão Encerrada\n")
