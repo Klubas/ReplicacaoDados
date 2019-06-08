@@ -30,16 +30,24 @@ def help(err):
 
 if __name__ == '__main__':
 
-    func=sys.argv[1]
-    hostname=sys.argv[2].split(":")
-    host=hostname[0]
-    port=hostname[1]
+    if len(sys.argv) == 3:
+        hostname=sys.argv[1].split(":")
+        host=hostname[0]
+        port=hostname[1]
+        func=sys.argv[2]
+    elif len(sys.argv) == 2:
+        hostname=sys.argv[1].split(":")
+        host=hostname[0]
+        port=hostname[1]
+        func="server"
+    else:
+        help(0)
 
     if func == 'server':
 
         app.run(host=host, port=port, debug=True)
 
-    elif sys.argv[1] == 'client':
+    elif func == 'client':
 
         count = 0
         while True:
