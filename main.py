@@ -38,13 +38,17 @@ def help(err):
 
 if __name__ == '__main__':
     if sys.argv[1] == 'server':
-        app.run(host="192.168.0.104", port=sys.argv[2], debug=True)
+        from requests import get
+        ip = get('https://api.ipify.org').text
+        app.run(host=ip, port=sys.argv[2], debug=True)
 
     elif sys.argv[1] == 'client':
         client = Client(get_host())
-        dados = client.busca_dados()
-        resposta = client.envia_dados(dados)
-        print(resposta)
+        while True:
+            print("\nInforme as informações do laudo: ")
+            dados = client.busca_dados()
+            resposta = client.envia_dados(dados)
+            print(resposta)
 
     else:
         help(0)
