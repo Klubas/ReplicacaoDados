@@ -30,7 +30,9 @@ def help(err):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 3:
+    if len(sys.argv) == 1:
+        app.run(debug=True)
+    elif len(sys.argv) == 3:
         hostname=sys.argv[1].split(":")
         host=hostname[0]
         port=hostname[1]
