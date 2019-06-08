@@ -17,7 +17,10 @@ class Client:
         #dados que serão enviados para o servidor
         num_laudo = input("Num laudo: ")
         descricao = input("Descricao: ")
-        #dic = 1
+        dic = {
+            "numero_laudo": num_laudo,
+            "descricao": descricao
+        }
         return json.dumps(dic)
 
 

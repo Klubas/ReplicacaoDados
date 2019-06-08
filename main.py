@@ -19,7 +19,7 @@ api.add_resource(Cadastro, '/cadastro')
 def get_host():
     if sys.argv[1] == 'client':
         return input("Informe o endereço IP do servidor: ").split(":")
-    else:
+    elif sys.argv[1] == 'server':
         return socket.gethostbyname(socket.gethostname())
 
 
