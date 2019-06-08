@@ -12,21 +12,21 @@ class Server():
             r1 = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
 
         except:
-            return json.dumps({"Status": "Não foi possível salvar as informações no banco de dados"})
+            return json.dumps({"Resposta": "Não foi possível salvar as informações no banco de dados"})
 
         try:
             db_client = self.setup_db_connection("client")
             r2 = self.__commit_to_db__(db_client, 'LAUDOS_REPLICADOS', 'numero_laudo', data)
 
             return json.dumps({
-                "Status": "Sucesso ao salvar dados na nuvem e realizar a replicação",
+                "Resposta": "Sucesso ao salvar dados na nuvem e realizar a replicação",
                 "Resposta Nuvem": r1,
                 "Resposta local": r2
             })
 
         except:
             # Todo: colocar trativa para desfazer a transação anerior
-            return json.dumps({"Status": "Não foi possível replicar as informações no banco de dados local"})
+            return json.dumps({"Resposta": "Não foi possível replicar as informações no banco de dados local"})
 
     # inicia conexão com banco de dados aws
     def setup_db_connection(self, profile):

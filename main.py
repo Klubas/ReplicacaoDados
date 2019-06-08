@@ -43,7 +43,8 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'client':
         client = Client(get_host())
         dados = client.busca_dados()
-        client.envia_dados(dados)
+        resposta = client.envia_dados(dados)
+        print(resposta)
 
     else:
         help(0)
