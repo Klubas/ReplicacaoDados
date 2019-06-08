@@ -21,10 +21,8 @@ class Client:
             "numero_laudo": num_laudo,
             "descricao": descricao
         }
-        print(json.dumps(dic))
         return json.dumps(dic)
 
 
     def envia_dados(self, message):
-        r = put('http://' + self.host + ':' + str(self.port) +  '/cadastro', data=message).json()
-        print(r)
+        return put('http://' + self.host + ':' + str(self.port) +  '/cadastro', data=message).json()

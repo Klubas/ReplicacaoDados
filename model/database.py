@@ -45,11 +45,7 @@ class Tabela:
         """
         Grava um registro no banco de dados
         """
-        # data = self.__tratar_dados__(data_json)
-        print(data_json)
         data_json = json.loads(data_json)
-        print(data_json)
-
         try:
             if len(self.__query__(data_json['numero_laudo'])['Items']) == 0:  # testa se o item ja existe no banco
                 response = self.table.put_item(
@@ -63,20 +59,6 @@ class Tabela:
                 return -2
         except Exception:
             return -1
-
-    """
-    {
-        numero_laudo: valor, 
-        descricao: desc'
-    }   
-    """
-
-    def __tratar_dados__(self, data):
-
-        data = data.split(",")
-        for i in range(0, len(data)):
-            data[i] = data[i].split(":")
-        return data
 
     def __query__(self, arg):
         try:

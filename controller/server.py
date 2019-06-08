@@ -1,13 +1,13 @@
 from model.database import DataBase, Tabela
 
+
 class Server():
     def __init__(self):
-        pass
+        print("Servidor instânciado")
 
     def salvar_dados(self, data):
         db = self.setup_db_connection("server")
         r = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
-        print(r)
         return r
         try:
             db = self.setup_db_connection("server")

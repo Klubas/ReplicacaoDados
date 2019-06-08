@@ -38,7 +38,7 @@ def help(err):
 
 if __name__ == '__main__':
     if sys.argv[1] == 'server':
-        app.run(host=get_host(), debug=True)
+        app.run(host="192.168.0.104", debug=True)
 
     elif sys.argv[1] == 'client':
         client = Client(get_host())
