@@ -20,4 +20,3 @@ class Cadastro(Resource):
         json = request.get_json(force=True)
         r = self.server.salvar_dados(data=json)
         return {'Status': r}, 201
-
