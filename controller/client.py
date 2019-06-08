@@ -1,5 +1,5 @@
 import json
-from requests import put, get
+from requests import put, get, post
 
 class Client:
     def __init__(self, server_address):
@@ -21,8 +21,10 @@ class Client:
             "numero_laudo": num_laudo,
             "descricao": descricao
         }
+        print(json.dumps(dic))
         return json.dumps(dic)
 
 
     def envia_dados(self, message):
-        put('http://localhost:5000/cadastro', data=message).json()
+        r = put('http://' + self.host + ':' + str(self.port) +  '/cadastro', data=message).json()
+        print(r)

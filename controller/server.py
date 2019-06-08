@@ -35,6 +35,7 @@ class Server():
 
     # salva as informacoes no banco de dados e tabela especificadas
     def __commit_to_db__(self, db, tabela, chave, data):
-        print('Dados a serem salvos: ' + data)
+        print('Dados a serem salvos: ')
+        print(data)
         table = Tabela(tabela, chave, db) #acessa recurso da tabela
         return table.create(data)

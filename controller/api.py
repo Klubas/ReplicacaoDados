@@ -16,7 +16,7 @@ class Cadastro(Resource):
         return {'hello': 'world'}
 
     def post(self):
-        json = request.get_json(force=False)
+        json = request.get_json(force=True)
         r = self.server.salvar_dados(data=json)
         return {'Status': r}, 201
 
