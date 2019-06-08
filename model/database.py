@@ -1,4 +1,5 @@
 import boto3
+import json
 from boto3.dynamodb.conditions import Key
 
 
@@ -40,22 +41,21 @@ class Tabela:
         self.key_name = key
         self.table = self.db.resource.Table(nome)
 
-    def create(self, data):
+    def create(self, data_json):
         """
         Grava um registro no banco de dados
-
-        :param data:
-        :return: resposta do banco ou erro
         """
-
-        data = self.__tratar_dados__(data)
+        # data = self.__tratar_dados__(data_json)
+        print(data_json)
+        data_json = json.loads(data_json)
+        print(data_json)
 
         try:
-            if len(self.__query__(data[0][1])['Items']) == 0:  # testa se o item ja existe no banco
+            if len(self.__query__(data_json['numero_laudo'])['Items']) == 0:  # testa se o item ja existe no banco
                 response = self.table.put_item(
                     Item={
-                        data[0][0]: data[0][1],
-                        data[1][0]: data[1][1]
+                        'numero_laudo': data_json['numero_laudo'],
+                        'descricao': data_json['descricao']
                     }
                 )
                 return response
@@ -65,7 +65,6 @@ class Tabela:
             return -1
 
     """
-        modelo dos dados, poderia ser um JSON:
     {
         numero_laudo: valor, 
         descricao: desc'
@@ -73,6 +72,7 @@ class Tabela:
     """
 
     def __tratar_dados__(self, data):
+
         data = data.split(",")
         for i in range(0, len(data)):
             data[i] = data[i].split(":")

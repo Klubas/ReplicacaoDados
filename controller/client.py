@@ -1,3 +1,4 @@
+import json
 from requests import put, get
 
 class Client:
@@ -7,14 +8,17 @@ class Client:
         try:
             self.port = int(server_address[1])
         except IndexError:
-            self.port = int(8080)
+            self.port = int(5000)
 
         print("Host: " + self.host + ":" + str(self.port))
 
 
     def busca_dados(self):
         #dados que serão enviados para o servidor
-        return get('http://localhost:5000/cadastro').json()
+        num_laudo = input("Num laudo: ")
+        descricao = input("Descricao: ")
+        #dic = 1
+        return json.dumps(dic)
 
 
     def envia_dados(self, message):
