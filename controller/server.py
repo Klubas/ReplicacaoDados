@@ -3,18 +3,14 @@ from model.database import DataBase, Tabela
 
 class Server():
     def __init__(self):
-        print("Servidor instânciado")
+        print("Servidor instanciado")
 
     def salvar_dados(self, data):
-        db = self.setup_db_connection("server")
-        r = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
-        return r
-
         try:
             db = self.setup_db_connection("server")
             r = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
             print(r)
-            try: # se tiver sucesso:
+            try: # se tiver sucesso salva no banco do client:
                 db_client = self.setup_db_connection("client")
                 r = self.__commit_to_db__(db_client, 'LAUDOS_REPLICADOS', 'numero_laudo', data)
                 print(r)
@@ -36,7 +32,6 @@ class Server():
 
     # salva as informacoes no banco de dados e tabela especificadas
     def __commit_to_db__(self, db, tabela, chave, data):
-        print('Dados a serem salvos: ')
-        print(data)
         table = Tabela(tabela, chave, db) #acessa recurso da tabela
-        return table.create(data)
+        table.create(data)
+        return "Commit"

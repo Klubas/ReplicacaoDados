@@ -1,5 +1,4 @@
 import boto3
-import json
 from boto3.dynamodb.conditions import Key
 
 
@@ -45,7 +44,6 @@ class Tabela:
         """
         Grava um registro no banco de dados
         """
-        data_json = json.dumps(data_json)
         try:
             if len(self.__query__(data_json['numero_laudo'])['Items']) == 0:  # testa se o item ja existe no banco
                 response = self.table.put_item(
