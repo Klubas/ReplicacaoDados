@@ -9,6 +9,7 @@ class Server():
         db = self.setup_db_connection("server")
         r = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
         return r
+
         try:
             db = self.setup_db_connection("server")
             r = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)

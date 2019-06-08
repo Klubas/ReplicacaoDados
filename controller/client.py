@@ -2,7 +2,9 @@ import json
 from requests import put, get, post
 
 class Client:
-    def __init__(self, server_address):
+    def __init__(self, hostname):
+        server_address = hostname.split(":")
+
         self.host = server_address[0]
 
         try:
@@ -25,4 +27,12 @@ class Client:
 
 
     def envia_dados(self, message):
-        return put('http://' + self.host + ':' + str(self.port) +  '/cadastro', data=message).json()
+
+        url = 'http://' + self.host + ':' + str(self.port) + '/cadastro'
+
+        headers = {"Content-Type": "application/json"}
+
+        response = put(url, data=message, headers=headers)
+
+        return response.json()
+
