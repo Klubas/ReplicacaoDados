@@ -1,8 +1,8 @@
 import json
-from model.database import DataBase, Tabela
+from model.database import DataBase, TabelaLaudos
 
 
-class Server():
+class Server:
     def __init__(self):
         print("Servidor instanciado")
 
@@ -19,7 +19,6 @@ class Server():
             r2 = self.__commit_to_db__(db_client, 'LAUDOS_REPLICADOS', 'numero_laudo', data)
 
             return json.dumps({
-                "Resposta": "Sucesso ao salvar dados na nuvem e realizar a replicação",
                 "Resposta Nuvem": r1,
                 "Resposta local": r2
             })
@@ -35,5 +34,5 @@ class Server():
 
     # salva as informacoes no banco de dados e tabela especificadas
     def __commit_to_db__(self, db, tabela, chave, data):
-        table = Tabela(tabela, chave, db) #acessa recurso da tabela
+        table = TabelaLaudos(tabela, chave, db) #acessa recurso da tabela
         return table.create(data)

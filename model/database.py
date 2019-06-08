@@ -35,7 +35,7 @@ class DataBase:
         return self.client.list_tables()['TableNames']
 
 
-class Tabela:
+class TabelaLaudos:
     def __init__(self, nome, key, db):
         self.db = db
         self.key_name = key

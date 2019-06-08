@@ -1,22 +1,16 @@
 import json
-from requests import put, get, post
+from requests import put, get
+
 
 class Client:
-    def __init__(self, hostname):
-        server_address = hostname.split(":")
-
-        self.host = server_address[0]
-
-        try:
-            self.port = int(server_address[1])
-        except IndexError:
-            self.port = int(5000)
+    def __init__(self, host="localhost", port=5000):
+        self.host = host
+        self.port = port
 
         print("Host: " + self.host + ":" + str(self.port))
 
-
-    def busca_dados(self):
-        #dados que serão enviados para o servidor
+    # dados que serão enviados para o servidor
+    def solicita_dados(self):
         num_laudo = input("Num laudo: ")
         descricao = input("Descricao: ")
         dic = {
@@ -25,14 +19,13 @@ class Client:
         }
         return json.dumps(dic)
 
-
     def envia_dados(self, message):
-
         url = 'http://' + self.host + ':' + str(self.port) + '/cadastro'
-
         headers = {"Content-Type": "application/json"}
 
-        response = put(url, data=message, headers=headers)
+        return put(url, data=message, headers=headers).json()
 
-        return response.json()
-
+    def testar_conexao(self):
+        url = 'http://' + self.host + ':' + str(self.port) + '/'
+        res = get(url, timeout=20).json()
+        return json.dumps(res)
