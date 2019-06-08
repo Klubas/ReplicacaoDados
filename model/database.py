@@ -44,19 +44,17 @@ class Tabela:
         """
         Grava um registro no banco de dados
         """
-        try:
-            if len(self.__query__(data_json['numero_laudo'])['Items']) == 0:  # testa se o item ja existe no banco
-                response = self.table.put_item(
-                    Item={
-                        'numero_laudo': data_json['numero_laudo'],
-                        'descricao': data_json['descricao']
-                    }
-                )
-                return response
-            else:
-                return -2
-        except Exception:
-            return -1
+        if len(self.__query__(data_json['numero_laudo'])['Items']) == 0:  # testa se o item ja existe no banco
+            response = self.table.put_item(
+                Item={
+                    'numero_laudo': data_json['numero_laudo'],
+                    'descricao': data_json['descricao']
+                }
+            )
+            return response
+        else:
+            return "Item repetido"
+
 
     def __query__(self, arg):
         try:
