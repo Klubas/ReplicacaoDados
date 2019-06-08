@@ -18,7 +18,7 @@ api.add_resource(Cadastro, '/cadastro')
 # identifica host do servidor e solicita que o client informe o host com o qual deseja se conectar
 def get_host():
     if sys.argv[1] == 'client':
-        return input("Informe o endereço IP do servidor: ").split(":")
+        return input("Informe o endereço IP do servidor: ")
     elif sys.argv[1] == 'server':
         return socket.gethostbyname(socket.gethostname())
 
@@ -38,12 +38,14 @@ def help(err):
 
 if __name__ == '__main__':
     if sys.argv[1] == 'server':
-        app.run(host=get_host(), debug=True)
+        app.run(host=get_host(), port=sys.argv[2], debug=True)
 
     elif sys.argv[1] == 'client':
         client = Client(get_host())
         dados = client.busca_dados()
-        client.envia_dados(dados)
+        print(dados)
+        res = client.envia_dados(dados)
+        print(res)
 
     else:
         help(0)

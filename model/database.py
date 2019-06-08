@@ -47,7 +47,7 @@ class Tabela:
         """
         # data = self.__tratar_dados__(data_json)
         print(data_json)
-        data_json = json.loads(data_json)
+        data_json = json.dumps(data_json)
         print(data_json)
 
         try:
