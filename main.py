@@ -16,8 +16,8 @@ api.add_resource(Cadastro, '/cadastro')
 # identifica host do servidor e solicita que o client informe o host com o qual deseja se conectar
 
 def help(err):
-    print("Use os argumentos [client] ou [server] seguidos da porta usada para conexão [port]")
-    print(__file__ + " [client/server] [port]")
+    print("Use os argumentos [client] ou [server] seguidos do host no formato [host]:[port]")
+    print(__file__ + " [client/server] [host]:[port]")
 
     if err < 0:
         print("Erro: " + str(err))
@@ -29,21 +29,28 @@ def help(err):
 
 
 if __name__ == '__main__':
-    ip = "192.168.0.104"
-    if sys.argv[1] == 'server':
 
-        # ip = input("Informe o endereço do servidor: ")
+    func=sys.argv[1]
+    hostname=sys.argv[2].split(":")
+    host=hostname[0]
+    port=hostname[1]
 
-        app.run(host=ip, port=sys.argv[2], debug=True)
+    if func == 'server':
+
+        app.run(host=host, port=port, debug=True)
 
     elif sys.argv[1] == 'client':
 
+        count = 0
         while True:
-            ip = input("Informe o endereço do servidor que deseja conectar: ")
-            client = Client(host=ip, port=sys.argv[2])
+            client = Client(host=host, port=port)
             response = json.loads(client.testar_conexao())
             if response['Status'] != 'OK':
                 print("Falha na conexão")
+                count = count + 1
+                if count == 10:
+                    print("Todas as tentativas de conexão falharam")
+                    exit(-10)
             else:
                 break
 
