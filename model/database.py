@@ -39,6 +39,7 @@ class TabelaLaudos:
     def __init__(self, nome, key, db):
         self.db = db
         self.key_name = key
+        self.nome = nome
         self.table = self.db.resource.Table(nome)
 
     def create(self, data_json):
@@ -57,6 +58,16 @@ class TabelaLaudos:
         else:
             return "Item repetido"
 
+    def delete(self, arg):
+        try:
+            response = self.table.delete_item(
+                Key={
+                    self.key_name: arg
+                }
+            )
+            return response
+        except Exception:
+            return -1
 
     def __query__(self, arg):
         try:

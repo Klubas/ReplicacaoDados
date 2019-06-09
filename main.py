@@ -1,5 +1,6 @@
 import sys
 import json
+import docker
 
 from flask import Flask
 from flask_restful import Api
@@ -32,11 +33,13 @@ if __name__ == '__main__':
 
     if len(sys.argv) == 1:
         app.run(debug=True)
+
     elif len(sys.argv) == 3:
         hostname=sys.argv[1].split(":")
         host=hostname[0]
         port=hostname[1]
         func=sys.argv[2]
+
     elif len(sys.argv) == 2:
         hostname=sys.argv[1].split(":")
         host=hostname[0]
@@ -53,6 +56,20 @@ if __name__ == '__main__':
 
         count = 0
         while True:
+
+            try:
+                docker_client = docker.from_env()
+
+                container = docker_client.containers.run(
+                    image="mongo:latest",
+                    name="ReplicacaoDB",
+                    ports={'27017/tcp': 27017}
+                )
+
+                container.logs()
+            except Exception as e:
+                print(e)
+
             client = Client(host=host, port=port)
             response = json.loads(client.testar_conexao())
             if response['Status'] != 'OK':

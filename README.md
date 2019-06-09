@@ -29,3 +29,5 @@
 - https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html
 
 - https://boto3.amazonaws.com/v1/documentation/api/latest/guide/dynamodb.html
+
+- https://medium.com/grupy-rn/trabalhando-com-python-e-mongodb-1d23ee042658

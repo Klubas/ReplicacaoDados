@@ -1,5 +1,6 @@
 import json
 from model.database import DataBase, TabelaLaudos
+from model.local_db import LocalDB, LocalTable
 
 
 class Server:
@@ -9,30 +10,51 @@ class Server:
     def salvar_dados(self, data):
         try:
             db = self.setup_db_connection("server")
-            r1 = self.__commit_to_db__(db, 'LAUDOS', 'numero_laudo', data)
+            table = self.__acessar_recurso_tabela('LAUDOS', 'numero_laudo', db)
+            r1 = self.__commit_to_db__(table, data)
+            try:
+                db_client = self.setup_local_db_connection("localhost", 27017)
+                local_table = self.__acessar_recurso_tabela_local('LAUDOS', db_client)
+                r2 = self.__commit_to_local_db(local_table, data)
+                return "OK"
+                return json.dumps({
+                    "Resposta Nuvem": r1,
+                    "Resposta local": r2
+                })
 
-        except:
+            except Exception as e:
+                # Trativa para desfazer a transação anterior
+                try:
+                    print(data[table.key_name])
+                    r3 = self.__delete_from_db(table, data[table.key_name])
+                except Exception as delete_exception:
+                    print(delete_exception)
+                print(e)
+                return json.dumps({"Resposta": "Não foi possível replicar as informações no banco de dados local"})
+        except Exception as e:
+            print(e)
             return json.dumps({"Resposta": "Não foi possível salvar as informações no banco de dados"})
-
-        try:
-            db_client = self.setup_db_connection("client")
-            r2 = self.__commit_to_db__(db_client, 'LAUDOS_REPLICADOS', 'numero_laudo', data)
-
-            return json.dumps({
-                "Resposta Nuvem": r1,
-                "Resposta local": r2
-            })
-
-        except:
-            # Todo: colocar trativa para desfazer a transação anerior
-            return json.dumps({"Resposta": "Não foi possível replicar as informações no banco de dados local"})
 
     # inicia conexão com banco de dados aws
     def setup_db_connection(self, profile):
-        db = DataBase(profile)
-        return db
+        return DataBase(profile)
+
+    def __acessar_recurso_tabela(self, nome_tabela, chave, db):
+        return TabelaLaudos(nome_tabela, chave, db)  # acessa recurso da tabela
+
+    def setup_local_db_connection(self, host, port):
+        return LocalDB(host, port)
+
+    def __acessar_recurso_tabela_local(self, nome_tabela, db):
+        return LocalTable(nome_tabela, db)
 
     # salva as informacoes no banco de dados e tabela especificadas
-    def __commit_to_db__(self, db, tabela, chave, data):
-        table = TabelaLaudos(tabela, chave, db) #acessa recurso da tabela
+
+    def __commit_to_db__(self, table, data):
         return table.create(data)
+
+    def __delete_from_db(self, table, valor_chave):
+        return table.delete(valor_chave)
+
+    def __commit_to_local_db(self, table, documento):
+        return table.create(documento)
