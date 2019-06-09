@@ -87,6 +87,7 @@ if __name__ == '__main__':
             #baixa uma container do mongo
             image = docker_client.images.pull('mongo:latest')
             print(image)
+            print("Em caso de erro de permissão execute `docker pull mongo` no terminal")
 
             container = docker_client.containers.run(
                 image="mongo:latest",
