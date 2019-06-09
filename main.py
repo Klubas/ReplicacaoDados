@@ -32,7 +32,7 @@ def help(err):
 
 import netifaces
 import ipaddress
-from pprint import pprint
+
 
 
 # Thanks stackoverflow https://stackoverflow.com/questions/39988525/find-local-non-loopback-ip-address-in-python
@@ -47,10 +47,10 @@ def get_local_non_loopback_ipv4_addresses():
                     yield address_info['addr']
 
 
-
 if __name__ == '__main__':
 
-    localhost = list(get_local_non_loopback_ipv4_addresses())[0]
+    localhost = list(get_local_non_loopback_ipv4_addresses())
+    print(localhost)
 
     if len(sys.argv) == 2:
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     else:
 
         help(-1)
-
+    """
     try:
         hostname = input("\nInforme o endereço do servidor [host:port]: ").split(":")
         host = hostname[0]
@@ -69,6 +69,10 @@ if __name__ == '__main__':
     except IndexError as ex:
         print("Formato inválido\n")
         exit(-1)
+    """
+
+    host = localhost[0]
+    port = 5000
 
     if func == 'server':
 
@@ -116,7 +120,7 @@ if __name__ == '__main__':
             dados = client.solicita_dados()
 
             dados = json.loads(dados)
-            dados["hostname"] = list(get_local_non_loopback_ipv4_addresses())[0]
+            dados["hostname"] = localhost[0]
             dados = json.dumps(dados)
 
             resposta = client.envia_dados(dados)
