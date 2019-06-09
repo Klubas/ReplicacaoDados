@@ -13,17 +13,17 @@ class Server:
             table = self.__acessar_recurso_tabela('LAUDOS', 'numero_laudo', db)
             r1 = self.__commit_to_db__(table, data)
             try:
-                db_client = self.setup_local_db_connection("localhost", 27017)
+                print(data['hostname'])
+                db_client = self.setup_local_db_connection(data['hostname'])
                 local_table = self.__acessar_recurso_tabela_local('LAUDOS', db_client)
                 r2 = self.__commit_to_local_db(local_table, data)
-                return "OK"
                 return json.dumps({
                     "Resposta Nuvem": r1,
-                    "Resposta local": r2
+                    "Resposta local": str(r2)
                 })
 
             except Exception as e:
-                # Trativa para desfazer a transação anterior
+                # Trativa para desfazer a transação anterior caso queira manter consistencia entre as duas bases
                 try:
                     print(data[table.key_name])
                     r3 = self.__delete_from_db(table, data[table.key_name])
@@ -35,14 +35,15 @@ class Server:
             print(e)
             return json.dumps({"Resposta": "Não foi possível salvar as informações no banco de dados"})
 
-    # inicia conexão com banco de dados aws
-    def setup_db_connection(self, profile):
+    # inicia conexão com banco de dados
+
+    def setup_db_connection(self, profile="Default"):
         return DataBase(profile)
 
     def __acessar_recurso_tabela(self, nome_tabela, chave, db):
         return TabelaLaudos(nome_tabela, chave, db)  # acessa recurso da tabela
 
-    def setup_local_db_connection(self, host, port):
+    def setup_local_db_connection(self, host=None, port=None):
         return LocalDB(host, port)
 
     def __acessar_recurso_tabela_local(self, nome_tabela, db):

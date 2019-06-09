@@ -1,6 +1,7 @@
 import sys
 import json
 import docker
+import socket
 
 from flask import Flask
 from flask_restful import Api
@@ -54,21 +55,22 @@ if __name__ == '__main__':
 
     elif func == 'client':
 
+        #inicia servidor mongodb no docker
+        try:
+            docker_client = docker.from_env()
+
+            container = docker_client.containers.run(
+                image="mongo:latest",
+                name="ReplicacaoDB",
+                ports={'27017/tcp': 27017}
+            )
+
+            container.logs()
+        except Exception as e:
+            print(e)
+
         count = 0
         while True:
-
-            try:
-                docker_client = docker.from_env()
-
-                container = docker_client.containers.run(
-                    image="mongo:latest",
-                    name="ReplicacaoDB",
-                    ports={'27017/tcp': 27017}
-                )
-
-                container.logs()
-            except Exception as e:
-                print(e)
 
             client = Client(host=host, port=port)
             response = json.loads(client.testar_conexao())
@@ -84,6 +86,11 @@ if __name__ == '__main__':
         while True:
             print("\nInforme os dados do laudo: ")
             dados = client.solicita_dados()
+
+            dados = json.loads(dados)
+            dados["hostname"] = socket.gethostbyname(socket.gethostname())
+            dados = json.dumps(dados)
+
             resposta = client.envia_dados(dados)
             print(resposta)
 

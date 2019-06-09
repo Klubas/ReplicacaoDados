@@ -1,7 +1,7 @@
 FROM python
 WORKDIR /ReplicacaoDados
 ADD . /ReplicacaoDados
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt; docker pull mongo
 EXPOSE 5000
-ENV NAME client
-CMD ["python", "main.py", "localhost:5000", client]
+ENV NAME server
+CMD ["python", "main.py"]

@@ -21,6 +21,17 @@
         access_key=
         secret_key=
         region=sa-east-1
+        
+## Uso
+
+* Run server
+        
+        docker run replicacado-dados-server
+    
+* Run client
+        
+        docker run replicacao-dados-client
+    
  
 ## Referências
 
