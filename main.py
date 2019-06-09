@@ -59,6 +59,7 @@ if __name__ == '__main__':
     else:
 
         help(-1)
+
     """
     try:
         hostname = input("\nInforme o endereço do servidor [host:port]: ").split(":")
@@ -99,6 +100,16 @@ if __name__ == '__main__':
 
         except Exception as e:
             print(e)
+
+        hostname = input("\nInforme o endereço do servidor [host:port]: ").split(":")
+        try:
+            host = hostname[0]
+            port = hostname[1]
+        except IndexError:
+            port = 5000
+
+        print(hostname)
+
 
         count = 0
         while True:
