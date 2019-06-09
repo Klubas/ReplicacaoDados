@@ -4,4 +4,4 @@ ADD . /ReplicacaoDados
 RUN pip install -r requirements.txt
 EXPOSE 5000
 ENV NAME server
-CMD ["python", "main.py", "server", "localhost:5000"]
+CMD ["python", "main.py", "server"]

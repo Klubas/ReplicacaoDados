@@ -18,8 +18,8 @@ api.add_resource(Cadastro, '/cadastro')
 # identifica host do servidor e solicita que o client informe o host com o qual deseja se conectar
 
 def help(err):
-    print("Use os argumentos [client] ou [server] seguidos do host no formato [host]:[port]")
-    print(__file__ + " [client/server] [host]:[port]")
+    print("Use os argumentos [client] ou [server]")
+    print(__file__ + " [client/server]")
 
     if err < 0:
         print("Erro: " + str(err))
@@ -31,39 +31,27 @@ def help(err):
 
 
 if __name__ == '__main__':
-    """
-    if len(sys.argv) >= 2:
 
-        func=sys.argv[1]
+    if len(sys.argv) == 2:
 
-    if len(sys.argv) == 3:
+        func = sys.argv[1]
 
-        hostname=sys.argv[2].split(":")
-        
-        host=hostname[0]
-        port=hostname[1]
+    else:
 
-    elif len(sys.argv) == 2:
+        help(-1)
 
-        hostname = input("Informe o endereço do servidor [host:port]: ").split(":")
-        
-        host=hostname[0]
-        port=hostname[1]
-    """
-
-    func=sys.argv[1]
-
-    hostname = input("Informe o endereço do servidor [host:port]: ").split(":")
-
-    host = hostname[0]
-    port = hostname[1]
-
-    if func == 'server' and len(sys.argv):
-
-        hostname = sys.argv[2].split(":")
-
+    try:
+        hostname = input("\nInforme o endereço do servidor [host:port]: ").split(":")
         host = hostname[0]
         port = hostname[1]
+        e = False
+        print(hostname)
+    except IndexError as ex:
+        print("Formato inválido\n")
+        exit(-1)
+
+    if func == 'server':
+
         app.run(host=host, port=port, debug=True)
 
     elif func == 'client':
@@ -72,8 +60,9 @@ if __name__ == '__main__':
         try:
             docker_client = docker.from_env()
 
-#            image = docker_client.images.pull('mongo:latest')
-#            image.log()
+            #baixa uma container do mongo
+            image = docker_client.images.pull('mongo:latest')
+            print(image)
 
             container = docker_client.containers.run(
                 image="mongo:latest",
@@ -85,11 +74,6 @@ if __name__ == '__main__':
 
         except Exception as e:
             print(e)
-
-        hostname = input("Informe o endereço do servidor [host:port]: ").split(":")
-
-        host = hostname[0]
-        port = hostname[1]
 
         count = 0
         while True:
