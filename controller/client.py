@@ -7,7 +7,7 @@ class Client:
         self.host = host
         self.port = port
 
-        print("Host: " + self.host + ":" + str(self.port))
+        print("Host: " + str(self.host) + ":" + str(self.port))
 
     # dados que serão enviados para o servidor
     def solicita_dados(self):
