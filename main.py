@@ -30,7 +30,27 @@ def help(err):
     sys.exit(err)
 
 
+import netifaces
+import ipaddress
+from pprint import pprint
+
+
+# Thanks stackoverflow https://stackoverflow.com/questions/39988525/find-local-non-loopback-ip-address-in-python
+def get_local_non_loopback_ipv4_addresses():
+    for interface in netifaces.interfaces():
+        # Not all interfaces have an IPv4 address:
+        if netifaces.AF_INET in netifaces.ifaddresses(interface):
+            # Some interfaces have multiple IPv4 addresses:
+            for address_info in netifaces.ifaddresses(interface)[netifaces.AF_INET]:
+                address_object = ipaddress.IPv4Address((address_info['addr']))
+                if not address_object.is_loopback:
+                    yield address_info['addr']
+
+
+
 if __name__ == '__main__':
+
+    localhost = list(get_local_non_loopback_ipv4_addresses())[0]
 
     if len(sys.argv) == 2:
 
@@ -96,7 +116,7 @@ if __name__ == '__main__':
             dados = client.solicita_dados()
 
             dados = json.loads(dados)
-            dados["hostname"] = socket.gethostbyname(socket.gethostname())
+            dados["hostname"] = list(get_local_non_loopback_ipv4_addresses())[0]
             dados = json.dumps(dados)
 
             resposta = client.envia_dados(dados)
