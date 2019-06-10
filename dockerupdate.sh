@@ -14,6 +14,6 @@ docker push klubas/replicacao:server
 
 docker push klubas/replicacao:client
 
-#docker run -p 5000:5000 replicacado-dados-server
+# docker run -it -p 5000:5000 klubas/replicacao:server
 
-#docker run -it -p 5000:5000 replicacao-dados-client
+# docker run -it -p 5000:5000 klubas/replicacao:client

@@ -48,7 +48,7 @@
 
         docker pull klubas/replicacao:client
         
-        docker run -it -p 5000:5000 klubas/replicacao:client
+        docker run -it klubas/replicacao:client
     
 ## Referências
 
