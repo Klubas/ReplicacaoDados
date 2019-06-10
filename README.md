@@ -44,7 +44,7 @@
         docker pull klubas/replicacao:client
         
         docker run -it --net=host klubas/replicacao:client
-    
+     
 ## Referências
 
 - https://medium.com/podiihq/networking-how-to-communicate-between-two-python-programs-abd58b97390a
