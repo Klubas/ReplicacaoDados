@@ -1,6 +1,5 @@
 import boto3
 from boto3.dynamodb.conditions import Key
-from datetime import datetime
 
 
 """
@@ -51,7 +50,8 @@ class TabelaLaudos:
                 Item={
                     'numero_laudo': data_json['numero_laudo'],
                     'descricao': data_json['descricao'],
-                    'date_insert': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    'date_insert': data_json['date_insert'],
+                    'hostname': data_json['hostname']
                 }
             )
             return response

@@ -1,7 +1,7 @@
 import sys
 import json
 import docker
-import socket
+from datetime import datetime
 
 from flask import Flask
 from flask_restful import Api
@@ -133,6 +133,7 @@ if __name__ == '__main__':
 
             dados = json.loads(dados)
             dados["hostname"] = localhost[0]
+            dados["date_insert"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             dados = json.dumps(dados)
 
             resposta = client.envia_dados(dados)
