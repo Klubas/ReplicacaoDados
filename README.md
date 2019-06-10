@@ -1,4 +1,4 @@
-# Comunicação entre duas aplicações cliente servidor 
+# Comunicação e replicação entre duas aplicações e bancos de dados não relacionais
 
 ## Cliente
  - Recebe os dados
