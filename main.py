@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 import json
 import docker
@@ -77,7 +78,7 @@ if __name__ == '__main__':
 
     if func == 'server':
 
-        app.run(host=host, port=port, debug=True)
+        app.run(host=host, port=port, debug=False)
 
     elif func == 'client':
 

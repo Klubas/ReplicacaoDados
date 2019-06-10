@@ -19,26 +19,37 @@
         region=sa-east-1
 
 ## Build
-
-* Server
-
-        docker build -f Dockerfile-server -t replicacao-dados-server
- 
-* Client
         
-        docker build -f Dockerfile-client -t replicacao-dados-client
+    cd path/to/ReplicacadoDados
+        
+    docker build -f Dockerfile-server -t replicacao-dados-server ./
+ 
+    docker build -f Dockerfile-client -t replicacao-dados-client ./
+        
+## Tag e Push
+    
+    docker tag replicacao-dados-server klubas/replicacao:server
+    
+    docker tag replicacao-dados-client klubas/replicacao:client
+    
+    docker push klubas/replicacao:server
+
+    docker push klubas/replicacao:client
 
 ## Run
 
 * Server
         
-        docker run -p 5000:5000 replicacado-dados-server
+        docker pull klubas/replicacao:server
+    
+        docker run -it -p 5000:5000 klubas/replicacao:server
     
 * Client
+
+        docker pull klubas/replicacao:client
         
-        docker run -p 5000:5000 replicacao-dados-client
+        docker run -it -p 5000:5000 klubas/replicacao:client
     
- 
 ## Referências
 
 - https://medium.com/podiihq/networking-how-to-communicate-between-two-python-programs-abd58b97390a

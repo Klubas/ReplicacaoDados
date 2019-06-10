@@ -3,18 +3,8 @@ from boto3.dynamodb.conditions import Key
 
 
 """
-Precisa ter esse arquivo no diretório $HOME com as credenciais AWS
+Precisa ter esse arquivo no diretorio $HOME/.aws/ com as credenciais AWS
 ~/.aws/config
-
-[default]
-access_key=
-secret_key=
-region=sa-east-1
-
-[profile client]
-aws_access_key_id=
-aws_secret_access_key=
-region=sa-east-1
 
 [profile server]
 aws_access_key_id=

@@ -29,8 +29,9 @@ class Server:
                     r3 = self.__delete_from_db(table, data[table.key_name])
                 except Exception as delete_exception:
                     print(delete_exception)
+                    r3 = "Não foi possível desfazer a transação"
                 print(e)
-                return json.dumps({"Resposta": "Não foi possível replicar as informações no banco de dados local"})
+                return json.dumps({"Resposta": "Não foi possível replicar as informações no banco de dados local", "Transacao": r3})
         except Exception as e:
             print(e)
             return json.dumps({"Resposta": "Não foi possível salvar as informações no banco de dados"})
