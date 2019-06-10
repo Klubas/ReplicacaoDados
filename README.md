@@ -42,7 +42,7 @@
         
         docker pull klubas/replicacao:server
     
-        docker run -it -p 5000:5000 klubas/replicacao:server
+        docker run -it -p 5000:5000 -e KEY_ID=AWS_KEY_ID -e SECRET_KEY=AWS_SECRET_KEY klubas/replicacao:server
     
 * Client
 

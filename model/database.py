@@ -15,8 +15,14 @@ region=sa-east-1
 
 
 class DataBase:
-    def __init__(self, profile="default"):
-        self.session = boto3.Session(profile_name=profile)
+    def __init__(self, key_id=None, secret_key=None):
+
+        self.session = boto3.Session(
+            aws_access_key_id = key_id,
+            aws_secret_access_key = secret_key,
+            region_name="sa-east-1"
+        )
+
         self.client = self.session.client('dynamodb')
         self.resource = self.session.resource('dynamodb')
 

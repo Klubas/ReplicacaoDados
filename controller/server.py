@@ -1,3 +1,4 @@
+import os
 import json
 from model.database import DataBase, TabelaLaudos
 from model.local_db import LocalDB, LocalTable
@@ -9,12 +10,13 @@ class Server:
 
     def salvar_dados(self, data):
         try:
-            db = self.setup_db_connection("server")
+            print(os.environ['KEY_ID'] + " - " + os.environ['SECRET_KEY'])
+            db = self.setup_db_connection(key_id=os.environ['KEY_ID'], secret_key=os.environ['SECRET_KEY'])
             table = self.__acessar_recurso_tabela('LAUDOS', 'numero_laudo', db)
             r1 = self.__commit_to_db__(table, data)
             try:
-                print(data['hostname'])
-                db_client = self.setup_local_db_connection(data['hostname'])
+                print("LocalDB ADDR = " + data['hostname'] + ":" + str(27017))
+                db_client = self.setup_local_db_connection(host=data['hostname'], port=27017)
                 local_table = self.__acessar_recurso_tabela_local('LAUDOS', db_client)
                 r2 = self.__commit_to_local_db(local_table, data)
                 return json.dumps({
@@ -38,8 +40,8 @@ class Server:
 
     # inicia conexão com banco de dados
 
-    def setup_db_connection(self, profile="Default"):
-        return DataBase(profile)
+    def setup_db_connection(self, key_id=None, secret_key=None):
+        return DataBase(key_id, secret_key)
 
     def __acessar_recurso_tabela(self, nome_tabela, chave, db):
         return TabelaLaudos(nome_tabela, chave, db)  # acessa recurso da tabela
