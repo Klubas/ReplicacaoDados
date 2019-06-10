@@ -9,14 +9,9 @@
  - Salva os dados do cliente 
  - Replica os dados no cliente
 
-### Configurações
-    
-    ~/.aws/config
+## Requisito
 
-        [default]
-        access_key=
-        secret_key=
-        region=sa-east-1
+ - MongoDB container
 
 ## Build
         
@@ -48,7 +43,7 @@
 
         docker pull klubas/replicacao:client
         
-        docker run -it klubas/replicacao:client
+        docker run -it --net=host klubas/replicacao:client
     
 ## Referências
 
